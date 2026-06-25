@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jornada da Mentoria · SEI Energia</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f4f6fb; --card:#ffffff; --ink:#1a2233; --muted:#6b7488; --line:#e4e8f1;
+  --blue:#364b81; --blue-soft:#eaf0ff; --orange:#f5821f;
+  --green:#16a34a; --green-soft:#e7f7ec; --amber:#d98a00; --amber-soft:#fdf3dd;
+  --red:#dc2626; --red-soft:#fdeaea; --grey-soft:#eef1f6; --brown:#503f3d;
+  --shadow:0 1px 3px rgba(20,30,60,.06),0 6px 20px rgba(20,30,60,.05);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.45;}
+.wrap{max-width:1080px;margin:0 auto;padding:22px 18px 80px;}
+.hero{background:linear-gradient(135deg,#364b81 0%,#43589a 55%,#5468b5 100%);color:#fff;border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:rgba(255,255,255,.08);border-radius:50%;}
+.hero h1{margin:0;font-size:22px;letter-spacing:.2px;}
+.hero p{margin:6px 0 0;opacity:.92;font-size:13.5px;max-width:680px;}
+.hero .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:5px 11px;border-radius:999px;font-size:12px;font-weight:600;}
+.pstrip{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow);margin-top:16px;}
+.ring{--p:0;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) calc(var(--p)*1%),var(--grey-soft) 0);}
+.ring .inner{width:74px;height:74px;border-radius:50%;background:var(--card);display:grid;place-items:center;text-align:center;}
+.ring .inner b{font-size:22px;line-height:1;} .ring .inner span{font-size:10px;color:var(--muted);}
+.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.pstat{background:var(--grey-soft);border-radius:12px;padding:10px 12px;}
+.pstat b{font-size:19px;display:block;} .pstat span{font-size:11.5px;color:var(--muted);}
+h2.sec{font-size:15px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin:30px 4px 12px;display:flex;align-items:center;gap:9px;}
+h2.sec::before{content:"";width:6px;height:18px;background:var(--orange);border-radius:3px;}
+.sec .addbtn{margin-left:auto;}
+.addbtn{background:var(--blue-soft);border:1px solid #c9d6ff;color:var(--blue);border-radius:8px;padding:5px 11px;font-size:11.5px;font-weight:700;cursor:pointer;text-transform:none;letter-spacing:0;}
+.addbtn:hover{background:#dbe5ff;}
+.hint{font-size:11.5px;color:var(--muted);margin:0 4px 10px;}
+.timeline{display:flex;overflow-x:auto;padding:6px 2px 14px;}
+.tl-node{flex:0 0 auto;width:122px;text-align:center;position:relative;padding-top:26px;cursor:pointer;border-radius:10px;transition:background .15s;}
+.tl-node:hover{background:rgba(54,75,129,.06);}
+.tl-node::before{content:"";position:absolute;top:11px;left:0;right:0;height:3px;background:var(--line);}
+.tl-node:first-child::before{left:50%;} .tl-node:last-child::before{right:50%;}
+.tl-dot{position:absolute;top:4px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--line);z-index:2;}
+.tl-node.done .tl-dot{background:var(--green);border-color:var(--green);}
+.tl-node.now .tl-dot{background:var(--orange);border-color:var(--orange);box-shadow:0 0 0 5px rgba(245,130,31,.18);}
+.tl-node.plan .tl-dot{background:#fff;border-color:var(--blue);}
+.tl-label{font-size:11.5px;font-weight:700;margin-top:4px;} .tl-date{font-size:10px;color:var(--muted);}
+.tl-theme{font-size:10px;opacity:.8;margin-top:3px;line-height:1.25;}
+.tl-more{font-size:9.5px;color:var(--blue);font-weight:700;margin-top:4px;}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);border-top:4px solid var(--line);}
+.pill .ptop{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.pill h3{margin:0;font-size:13.5px;} .pill p{margin:8px 0 0;font-size:11.5px;color:var(--muted);}
+.pill .st{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+.st.green{background:var(--green-soft);color:var(--green);} .st.amber{background:var(--amber-soft);color:var(--amber);}
+.st.orange{background:#ffe9d6;color:var(--orange);} .st.red{background:var(--red-soft);color:var(--red);}
+.eng{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
+.eperson{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px;box-shadow:var(--shadow);}
+.eperson .en{font-weight:700;font-size:13px;display:flex;justify-content:space-between;align-items:center;}
+.eperson .role{font-size:10.5px;color:var(--muted);margin-bottom:7px;}
+.ebar{height:7px;border-radius:5px;background:var(--grey-soft);overflow:hidden;margin-bottom:7px;}
+.ebar i{display:block;height:100%;border-radius:5px;}
+.eperson select{width:100%;font-size:11.5px;border:1px solid var(--line);border-radius:8px;padding:4px 6px;background:var(--card);color:var(--ink);}
+.phase{margin-bottom:8px;}
+.phase-head{display:flex;align-items:center;gap:12px;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 16px;box-shadow:var(--shadow);margin-bottom:10px;user-select:none;}
+.phase-num{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#fff;flex:0 0 auto;font-size:14px;}
+.phase-head h3{margin:0;font-size:15px;flex:1;} .phase-head .pmeta{font-size:11.5px;color:var(--muted);}
+.phase-prog{flex:0 0 130px;}
+.phase-prog .pp-bar{height:7px;border-radius:5px;background:var(--grey-soft);overflow:hidden;}
+.phase-prog .pp-bar i{display:block;height:100%;background:var(--green);border-radius:5px;}
+.phase-prog .pp-txt{font-size:10.5px;color:var(--muted);text-align:right;margin-top:3px;}
+.caret{transition:transform .2s;color:var(--muted);font-size:13px;}
+.phase.collapsed .caret{transform:rotate(-90deg);} .phase.collapsed .tasks{display:none;} .phase.collapsed .addtask{display:none;}
+.tasks{display:grid;gap:9px;margin:0 0 10px 8px;border-left:2px dashed var(--line);padding-left:16px;}
+.task{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr;gap:12px;}
+.task.done{background:#f6fbf7;border-color:#cdeed6;} .task.done .ttitle{text-decoration:line-through;opacity:.6;}
+.cbox{appearance:none;-webkit-appearance:none;width:22px;height:22px;border:2px solid var(--line);border-radius:7px;cursor:pointer;position:relative;flex:0 0 auto;margin-top:2px;}
+.cbox:hover{border-color:var(--green);} .cbox:checked{background:var(--green);border-color:var(--green);}
+.cbox:checked::after{content:"\2713";color:#fff;font-size:14px;font-weight:900;position:absolute;top:-1px;left:3px;}
+.ttop{display:flex;align-items:flex-start;gap:8px;}
+.ttitle{font-weight:700;font-size:13.5px;flex:1;} .tdetail{font-size:11.5px;color:var(--muted);margin-top:3px;}
+.ticons{display:flex;gap:6px;flex:0 0 auto;}
+.iconbtn{background:var(--grey-soft);border:1px solid var(--line);border-radius:7px;width:28px;height:26px;display:grid;place-items:center;cursor:pointer;font-size:12px;line-height:1;}
+.iconbtn:hover{background:#e3e8f2;} .iconbtn.del:hover{background:var(--red-soft);border-color:#f3b4b4;}
+.tbadges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.bdg{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--grey-soft);color:var(--muted);}
+.bdg.gut{background:var(--red-soft);color:var(--red);} .bdg.src{background:var(--blue-soft);color:var(--blue);}
+.tctrl{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.tctrl label{font-size:10px;color:var(--muted);display:flex;flex-direction:column;gap:3px;}
+.tctrl select,.tctrl input{font-size:11.5px;border:1px solid var(--line);border-radius:8px;padding:4px 7px;background:var(--card);color:var(--ink);}
+.tctrl select{min-width:110px;}
+.addtask{margin:0 0 18px 8px;}
+.addtaskbtn{background:none;border:1.5px dashed var(--line);color:var(--muted);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;width:100%;}
+.addtaskbtn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-soft);}
+.footer{text-align:center;color:var(--muted);font-size:11px;margin-top:34px;line-height:1.6;}
+.resetbtn{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:5px 12px;font-size:11px;cursor:pointer;margin-top:8px;}
+.resetbtn:hover{border-color:var(--red);color:var(--red);}
+.overlay{position:fixed;inset:0;background:rgba(20,28,52,.45);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;z-index:50;overflow-y:auto;}
+.overlay.open{display:flex;}
+.modal{background:var(--card);border-radius:16px;max-width:620px;width:100%;box-shadow:0 18px 60px rgba(20,30,60,.3);padding:0;animation:pop .15s ease;}
+@keyframes pop{from{transform:translateY(8px);opacity:.6}to{transform:none;opacity:1}}
+.modal-head{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line);}
+.modal-head h3{margin:0;font-size:16px;flex:1;}
+.modal-head .x{background:var(--grey-soft);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:16px;}
+.modal-body{padding:18px 20px;}
+.mblock{margin-bottom:14px;}
+.mblock h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
+.mblock p{margin:0;font-size:13px;}
+.mlist{margin:0;padding-left:18px;font-size:12.5px;} .mlist li{margin-bottom:4px;}
+.mlist.alert li{color:var(--red);}
+.assoc{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:6px 0;border-bottom:1px solid var(--line);}
+.assoc:last-child{border-bottom:none;}
+.assoc .minic{width:18px;height:18px;flex:0 0 auto;}
+.assoc .ad{color:var(--muted);font-size:10.5px;}
+.statusbadge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+.field label{font-size:11px;font-weight:700;color:var(--muted);}
+.field input,.field select,.field textarea{font-size:13px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--card);color:var(--ink);font-family:inherit;width:100%;}
+.field textarea{resize:vertical;min-height:60px;}
+.field .sub{font-size:10.5px;color:var(--muted);font-weight:400;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;padding:14px 20px;border-top:1px solid var(--line);}
+.btn{border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;}
+.btn.primary{background:var(--blue);color:#fff;} .btn.primary:hover{background:#2c3e6e;}
+.btn.ghost{background:var(--grey-soft);color:var(--ink);} .btn.ghost:hover{background:#e3e8f2;}
+.btn.danger{background:var(--red-soft);color:var(--red);} .btn.danger:hover{background:#f9d3d3;}
+.btn.mr{margin-right:auto;}
+@media(max-width:560px){.pstats{grid-template-columns:repeat(2,1fr);}.phase-prog{display:none;}.frow{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1 id="h-title">🧭 Jornada da Mentoria</h1>
+    <p id="h-sub"></p>
+    <div class="chips" id="h-chips"></div>
+  </div>
+  <div class="pstrip">
+    <div class="ring" id="ring"><div class="inner"><b id="ringPct">0%</b><span>concluído</span></div></div>
+    <div class="pstats">
+      <div class="pstat"><b id="stDone">0</b><span>tarefas concluídas</span></div>
+      <div class="pstat"><b id="stTotal">0</b><span>tarefas no total</span></div>
+      <div class="pstat"><b id="stOpen">0</b><span>em aberto</span></div>
+      <div class="pstat"><b id="stEnc">0</b><span id="stEncLbl">encontros realizados</span></div>
+    </div>
+  </div>
+  <section id="sec-tl">
+    <h2 class="sec">Linha do tempo dos encontros <button class="addbtn" onclick="openEncEdit(-1)">+ Encontro</button></h2>
+    <p class="hint">Clique em uma bolinha para ver o que foi feito, entregáveis, alertas e tarefas associadas — e editar ou excluir o encontro.</p>
+    <div class="timeline" id="timeline"></div>
+  </section>
+  <section id="sec-pil"><h2 class="sec">Status dos pilares</h2><div class="pillars" id="pillars"></div></section>
+  <section id="sec-eng"><h2 class="sec">Nível de engajamento da equipe</h2><div class="eng" id="eng"></div></section>
+  <h2 class="sec">Jornada de tarefas</h2>
+  <div id="journey"></div>
+  <div class="footer">
+    <span id="f-contact"></span>
+    <br>Suas alterações (tarefas, encontros e marcações) ficam salvas neste navegador.
+    <br><button class="resetbtn" onclick="resetAll()">↺ Restaurar conteúdo original do plano</button>
+  </div>
+</div>
+
+<div class="overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head"><h3 id="modalTitle"></h3><button class="x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<script>
+/* ============================ DADOS (SEED) ============================ */
+const SEED = {"cliente":"SEI Energia","subtitulo":"Acompanhe a evolução da mentoria. Foco do ciclo: gerar caixa (próximos 30–45 dias). Marque as tarefas feitas, edite, crie e ajuste o que precisar.","contato":"Mentoria CHR · gestao@mentoriachr.com · (62) 9.9918-2876","encontroAtual":3,"chips":["📅 Encontro 03 / 12","🚀 Início 09/04/2026","🎯 Foco: gerar caixa","⏱️ Cadência semanal (próx. 4)"],"pessoas":["André","Christopher","Raycy"],"encontros":[{"n":"E01","d":"09/04","t":"Onboarding — diagnóstico completo","s":"done","resumo":"Onboarding e diagnóstico inicial. Ficou claro que a SEI vende soluções energéticas completas (gestão, eficiência e implantação) — resultado financeiro, não solar. Levantamento da realidade comercial: faturamento, ticket por serviço, ~5 clientes recorrentes, conversão ~29% e origem 100% por indicação.","insights":["Gargalo não é falta de oportunidade — é conversão, follow-up e posicionamento.","Forte centralização em André (~95% das propostas passam por ele)."],"entregaveis":["Diagnóstico inicial documentado","Lista de dados a levantar: financeiro, base de clientes, proposta atual e CRM (com Vinícius)"]},{"n":"E02","d":"28/04","t":"Plano de ação + pipeline + proposta","s":"done","resumo":"Diagnóstico ao vivo e construção do Plano de Ação. Análise do pipeline: 28 propostas, R$ 13,5M gerados, R$ 3,5M em negociação e 8 fechadas (~29%). Mapa de stakeholders dos clientes-chave e revisão da proposta comercial em duas versões (financeira/ROI e técnica).","insights":["GBA fechado a R$ 10.000/mês recorrente — primeiro grande contrato da mentoria.","Cada proposta vivia 'na cabeça do André', sem SLA de follow-up."],"entregaveis":["Plano de Ação entregue","Relatório de propostas / pipeline","Mapa de stakeholders dos clientes-chave","Estrutura de proposta em 2 versões (ROI e técnica)"]},{"n":"E03","d":"12/06","t":"Retomada comercial + posicionamento + nova metodologia","s":"done","resumo":"Retomada comercial após ~4 meses de crise (jan–abr quase sem fechar, com R$ 13,5M em propostas abertas). A virada veio quando André mudou a mentalidade — saiu do desespero de fechamento e melhorou a representação; de maio para cá os negócios voltaram a fechar. Custo mensal reduzido de R$ 80k para R$ 40k e entrada de nova gestão financeira/administrativa firme. Decisão do ciclo: 100% foco em gerar caixa nos próximos 30–45 dias, com cadência semanal. Alinhamento de posicionamento (agronegócio, não agropecuário; plataforma própria, não licença Simer), marketing (entrada de Lucas e Stephanie) e nova metodologia de acompanhamento (entregáveis, checklist e processos).","insights":["Honestidade fecha e fideliza: na Fricó, André assumiu o erro e o cliente valorizou.","Desespero não vende — a retomada veio com melhor representação (venda consultiva).","Plataforma própria de monitoramento vira ativo e diferencial (substitui a Simer; 3 clientes já migrados).","Apresentação não condiz com o ticket: propostas de R$ 4,5M com material amador → duas apresentações (resultado e técnica).","Conteúdo 'na dor' do solar (108k prometidos vs. 76k reais) é filão forte de autoridade."],"alertas":["Inadimplência na obra: 1º cheque voltou; 2º vence na semana seguinte.","Furto recorrente em obra: ~R$ 9.000 em cabo roubado.","Concentração em André segue alta; processos ainda informais.","Não pular a reorganização: caixa primeiro, mas processos/CRM precisam vir logo em seguida."],"entregaveis":["Plano de Ação revisado (v2) entregue ao André","Definição das 5 frentes do ciclo (caixa, posicionamento, CIAC, marketing, processos)","Estrutura das duas apresentações (a passar slide a slide)","Briefing de marca a ajustar (agronegócio + plataforma própria)"]},{"n":"E04","d":"jun/jul","t":"Gerar caixa · acompanhamento semanal","s":"now","resumo":"Encontro planejado (cadência semanal). Foco em acompanhar o fechamento das propostas já em casa e clientes ativos, revisar o avanço de cada frente do ciclo e destravar o que estiver parado.","entregaveis":["Status das propostas em casa (Fricó, Paraíso, Saga, obra)","Avanço das apresentações e do briefing de marca"]},{"n":"E05","d":"jul","t":"Caixa + apresentações","s":"plan","resumo":"Encontro planejado. Continuação do foco em caixa e consolidação das duas apresentações comerciais (resultado/autoridade e técnica).","entregaveis":["Apresentações comerciais validadas","Pipeline atualizado"]},{"n":"E06","d":"jul","t":"Caixa + início de processos","s":"plan","resumo":"Encontro planejado. Com o caixa recomposto, início da padronização de processos e entregáveis, rumo ao CRM e ao funil de vendas.","entregaveis":["Primeiros processos mapeados","Definição do CRM e do funil"]}],"pilares":[{"n":"Comercial / Geração de caixa","st":"Em retomada","nivel":"amber","d":"Negócios voltaram a fechar desde maio. Foco total em converter as propostas já em casa e clientes ativos (Fricó, Paraíso, Saga) antes de reorganizar."},{"n":"Fechamento e conversão","st":"Melhorando","nivel":"green","d":"Virada de postura de André destravou os fechamentos. Custo mensal reduzido de R$ 80k → R$ 40k. Honestidade como diferencial (case Fricó)."},{"n":"Posicionamento e apresentação","st":"Em ajuste","nivel":"amber","d":"Corrigir 'agropecuário' → agronegócio e 'licença Simer' → plataforma própria. Duas apresentações: resultado/autoridade e técnica."},{"n":"Prospecção ativa","st":"Iniciando","nivel":"orange","d":"Feira CIAC (18–20/06) como primeiro canal estruturado. Histórico de 100% indicação."},{"n":"Plataforma própria / recorrência","st":"Novo ativo","nivel":"green","d":"Monitoramento próprio substitui a dependência da Simer; 3 clientes já migrados. Vira produto e empresa separada."},{"n":"Processos, CRM e gestão","st":"Aguardando caixa","nivel":"red","d":"CRM e funil entram após recompor o caixa. Processos ainda informais; nova gestão financeira ajuda a segurar o caixa."}],"equipe":[{"n":"André","r":"Sócio / operacional — conduz a empresa e todo o comercial","e":"Alto"}],"fases":[{"id":"f1","cor":"#16a34a","numero":1,"titulo":"Fase 1 · Fundação — diagnóstico e dados","meta":"abr–mai/2026 · CONCLUÍDO","tarefas":[{"id":"t101","titulo":"Levantar faturamento e separar por tipo (Gestão / Serviço / UFV)","detalhe":"Base financeira dos últimos meses e ticket por serviço.","resp":"André","prazo":"2026-04-28","feito":true,"fonte":"E01"},{"id":"t102","titulo":"Mapear base de clientes e pipeline comercial","detalhe":"28 propostas · R$ 13,5M gerados · R$ 3,5M em negociação.","resp":"André","prazo":"2026-04-28","feito":true,"fonte":"E02"},{"id":"t103","titulo":"Revisar proposta atual e entregar relatório de propostas","detalhe":"Diagnóstico da proposta e do pipeline ao vivo.","resp":"André","prazo":"2026-04-28","feito":true,"fonte":"E02"},{"id":"t104","titulo":"Reduzir estrutura de custos e reorganizar a gestão financeira","detalhe":"Despesa mensal de R$ 80k → R$ 40k. Nova gestão administrativa/financeira firme.","resp":"André","prazo":"2026-05-31","feito":true,"fonte":"E03"},{"id":"t105","titulo":"Virar a chave comercial — sair do desespero de fechamento","detalhe":"Melhor postura/representação destravou os fechamentos a partir de maio.","resp":"André","prazo":"2026-05-31","feito":true,"fonte":"E03"}]},{"id":"f2","cor":"#f5821f","numero":2,"titulo":"Fase 2 · Gerar caixa — fechar o que já está em casa","meta":"0–45 dias · PRIORIDADE MÁXIMA","tarefas":[{"id":"t201","titulo":"Fricó: resolver/operar Trindade para destravar Goiânia","detalhe":"Manutenção + UFV Goiânia (~R$ 4,5M). Reorganizar 270 placas e o inversor.","resp":"André","prazo":"2026-07-28","feito":false,"fonte":"E03","prio":"Prioridade"},{"id":"t202","titulo":"Paraíso: instalar reguladores de tensão e usar como case","detalhe":"Serviço novo fechado com o maior cliente; planta rodando 100%. Prova social.","resp":"André","prazo":"2026-06-30","feito":false,"fonte":"E03"},{"id":"t203","titulo":"Grupo Saga: atualizar propostas em aberto e retomar","detalhe":"Alguns produtos já fechados; retomar o restante.","resp":"André","prazo":"2026-07-04","feito":false,"fonte":"E03"},{"id":"t204","titulo":"Obra Neto/Paulo: pressionar Alcir e cobrar pagamento","detalhe":"Finalizar caixas e mangueiras antes da vistoria do fiscal; acompanhar o 2º cheque (1º voltou).","resp":"André","prazo":"2026-06-30","feito":false,"fonte":"E03","prio":"Urgente"},{"id":"t205","titulo":"Pipeline antigo: definir regra de follow-up e retomar contato","detalhe":"Retomar propostas paradas há muito tempo com critério de cadência.","resp":"André","prazo":"2026-07-11","feito":false,"fonte":"E03"}]},{"id":"f3","cor":"#364b81","numero":3,"titulo":"Fase 3 · Posicionamento e apresentação comercial","meta":"0–45 dias","tarefas":[{"id":"t301","titulo":"Christopher: enviar a André as tarefas e o novo Plano de Ação","detalhe":"Plano de Ação revisado no Encontro 03 entregue.","resp":"Christopher","prazo":"2026-06-13","feito":true,"fonte":"E03"},{"id":"t302","titulo":"Ajustar o briefing da marca","detalhe":"Remover 'agropecuário' → agronegócio; remover 'licença Simer' → plataforma própria.","resp":"André","prazo":"2026-06-30","feito":false,"fonte":"E03"},{"id":"t303","titulo":"Christopher: passar conteúdo e estrutura das duas apresentações","detalhe":"Slide a slide: (1) resultado/autoridade e (2) técnica.","resp":"Christopher","prazo":"2026-06-27","feito":false,"fonte":"E03"},{"id":"t304","titulo":"Desenvolver a nova identidade da apresentação comercial","detalhe":"Começar por 1 slide-modelo. Criativos clean: menos laranja, menos texto, mais vídeo/foto.","resp":"André","prazo":"2026-07-04","feito":false,"fonte":"E03"},{"id":"t305","titulo":"Mapear cada proposta em aberto e o argumento de fechamento","detalhe":"Argumento de quem já está em casa (Fricó, Saga, etc.).","resp":"André","prazo":"2026-07-04","feito":false,"fonte":"E03"}]},{"id":"f4","cor":"#d98a00","numero":4,"titulo":"Fase 4 · Feira CIAC — primeiro canal de prospecção","meta":"18–20/06/2026","tarefas":[{"id":"t401","titulo":"Preparar a feira CIAC: estratégia, estande, pitch e material","detalhe":"Pitch de até 2 min; estande de frente ao da Max; ~40 mil pessoas.","resp":"André","prazo":"2026-06-18","feito":true,"fonte":"E03"},{"id":"t402","titulo":"Executar a feira: circular, captar contatos e cobrir conteúdo","detalhe":"Não ficar parado no estande; captar leads e registrar o evento.","resp":"André","prazo":"2026-06-20","feito":true,"fonte":"E03"},{"id":"t403","titulo":"Pós-feira: trabalhar os contatos captados (follow-up)","detalhe":"Cadência de retorno para os leads do evento.","resp":"André","prazo":"2026-06-27","feito":false,"fonte":"E03"}]},{"id":"f5","cor":"#503f3d","numero":5,"titulo":"Fase 5 · Marketing e conteúdo","meta":"Em curso","tarefas":[{"id":"t501","titulo":"Retomar a produção de conteúdo com constância","detalhe":"Cadência regular de publicações.","resp":"André","prazo":"2026-07-04","feito":false,"fonte":"E03"},{"id":"t502","titulo":"Conteúdo na dor: educar sobre as promessas furadas do solar","detalhe":"108 mil prometidos vs. 76 mil reais, telhado, inversor sem reserva, degradação.","resp":"André","prazo":"2026-07-11","feito":false,"fonte":"E03"},{"id":"t503","titulo":"Captar vídeo e depoimentos de cases","detalhe":"Paraíso, BCA/Rio Verde, Grupo Décio, Saga — GoPro/óculos-câmera nas manutenções.","resp":"André","prazo":"2026-07-18","feito":false,"fonte":"E03"},{"id":"t504","titulo":"Comunicar a plataforma própria como diferencial","detalhe":"Monitoramento próprio (substitui Simer) e, futuramente, produto.","resp":"André","prazo":"2026-07-18","feito":false,"fonte":"E03"}]},{"id":"f6","cor":"#6b7488","numero":6,"titulo":"Fase 6 · Processos, CRM e gestão (depois do caixa)","meta":"Após recompor o caixa","tarefas":[{"id":"t601","titulo":"Metodologia de acompanhamento CHR (entregáveis + checklist)","detalhe":"Cada entregável com responsável, frequência e checklist; pacote de mensagens semanais (segunda).","resp":"Christopher","prazo":"2026-07-25","feito":false,"fonte":"E03"},{"id":"t602","titulo":"Desenhar processos recorrentes em BPMN","detalhe":"Ex.: manutenção Fricó — mensagem → confirmar recebimento → executar → relatório ao cliente.","resp":"Christopher","prazo":"2026-08-01","feito":false,"fonte":"E03"},{"id":"t603","titulo":"Checklist diário para a equipe","detalhe":"Ex.: contagem diária de estoque → OK ou solicitação de compra. Criar processo, não esperar proatividade.","resp":"André","prazo":"2026-08-08","feito":false,"fonte":"E03"},{"id":"t604","titulo":"Definir e adotar CRM + funil de vendas","detalhe":"Entra na sequência, depois de recompor o caixa.","resp":"André","prazo":"2026-08-15","feito":false,"fonte":"E03"}]}]};
+/* ========================== FIM DOS DADOS =========================== */
+
+const ENG_LEVELS = {"Alto":{w:100,c:"#16a34a"},"Médio":{w:60,c:"#d98a00"},"Baixo":{w:32,c:"#dc2626"},"Ausente":{w:12,c:"#9aa3b2"}};
+const STATUS_LABEL = {done:"Concluído",now:"Em andamento",plan:"Planejado"};
+const slug = s => (s||"cliente").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+const LS = "jornada_" + slug(SEED.cliente) + "_v2";
+const clone = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const escAttr = s => esc(s).replace(/"/g,"&quot;");
+
+let DATA, UI;
+function load(){
+  try{ const s=JSON.parse(localStorage.getItem(LS)); if(s && s.data && s.data.cliente){ DATA=s.data; UI=s.ui||{collapsed:{}}; return; } }catch(e){}
+  DATA=clone(SEED); UI={collapsed:{}};
+}
+function save(){ localStorage.setItem(LS, JSON.stringify({data:DATA, ui:UI})); }
+
+const allTasks = () => DATA.fases.flatMap(f=>f.tarefas);
+function findTask(id){ for(let fi=0;fi<DATA.fases.length;fi++){ const ti=DATA.fases[fi].tarefas.findIndex(t=>t.id===id); if(ti>=0) return {fi,ti,t:DATA.fases[fi].tarefas[ti]}; } return null; }
+function peopleList(){
+  const set=new Set((DATA.pessoas||[]).filter(p=>p&&p!=="—"));
+  allTasks().forEach(t=>{ if(t.resp) String(t.resp).split(/[+/,]/).forEach(p=>set.add(p.trim())); });
+  return ["—",...[...set].filter(Boolean)];
+}
+
+function renderHeader(){
+  document.getElementById("h-title").textContent = "🧭 Jornada da Mentoria — " + DATA.cliente;
+  document.getElementById("h-sub").textContent = DATA.subtitulo || "";
+  document.getElementById("h-chips").innerHTML = (DATA.chips||[]).map(c=>`<span class="chip">${esc(c)}</span>`).join("");
+  document.getElementById("f-contact").textContent = DATA.contato || "";
+  document.title = "Jornada da Mentoria · " + DATA.cliente;
+}
+function renderTimeline(){
+  const sec=document.getElementById("sec-tl");
+  if(!DATA.encontros || !DATA.encontros.length){ sec.style.display="none"; return; }
+  sec.style.display="";
+  document.getElementById("timeline").innerHTML = DATA.encontros.map((e,i)=>`
+    <div class="tl-node ${e.s||"plan"}" onclick="openEncDetail(${i})" title="Ver detalhes">
+      <div class="tl-dot"></div>
+      <div class="tl-label">${esc(e.n)}</div><div class="tl-date">${esc(e.d)}</div>
+      <div class="tl-theme">${esc(e.t)}</div>
+      <div class="tl-more">ver detalhes ›</div></div>`).join("");
+  const done = DATA.encontros.filter(e=>e.s==="done").length;
+  document.getElementById("stEnc").textContent = DATA.encontroAtual || done;
+}
+function renderPillars(){
+  const sec=document.getElementById("sec-pil");
+  if(!DATA.pilares || !DATA.pilares.length){ sec.style.display="none"; return; }
+  document.getElementById("pillars").innerHTML = DATA.pilares.map(p=>`
+    <div class="pill" style="border-top-color:var(--${p.nivel==='green'?'green':p.nivel==='red'?'red':p.nivel==='orange'?'orange':'amber'})">
+      <div class="ptop"><h3>${esc(p.n)}</h3><span class="st ${p.nivel||'amber'}">${esc(p.st)}</span></div>
+      <p>${esc(p.d)}</p></div>`).join("");
+}
+function renderEng(){
+  const sec=document.getElementById("sec-eng");
+  if(!DATA.equipe || !DATA.equipe.length){ sec.style.display="none"; return; }
+  document.getElementById("eng").innerHTML = DATA.equipe.map((p,i)=>{
+    const cur = p.e || "Médio"; const lv = ENG_LEVELS[cur]||ENG_LEVELS["Médio"];
+    const opts = Object.keys(ENG_LEVELS).map(k=>`<option ${k===cur?"selected":""}>${k}</option>`).join("");
+    return `<div class="eperson"><div class="en">${esc(p.n)}<span style="font-size:10px;color:${lv.c}">●</span></div>
+      <div class="role">${esc(p.r||"")}</div><div class="ebar"><i style="width:${lv.w}%;background:${lv.c}"></i></div>
+      <select onchange="setEng(${i},this.value)">${opts}</select></div>`;
+  }).join("");
+}
+function setEng(i,v){ DATA.equipe[i].e=v; save(); renderEng(); }
+
+function renderJourney(){
+  const opts = sel => peopleList().map(p=>`<option ${p===sel?"selected":""}>${esc(p)}</option>`).join("");
+  document.getElementById("journey").innerHTML = DATA.fases.map((ph,fi)=>{
+    const rows = ph.tarefas.map((t,ti)=>{
+      return `<div class="task ${t.feito?"done":""}" id="card_${t.id}">
+        <input type="checkbox" class="cbox" ${t.feito?"checked":""} onchange="toggle('${t.id}',this.checked)">
+        <div>
+          <div class="ttop">
+            <div class="ttitle">${esc(t.titulo)}</div>
+            <div class="ticons">
+              <button class="iconbtn" title="Editar tarefa" onclick="openTaskEdit(${fi},${ti})">✏️</button>
+              <button class="iconbtn del" title="Excluir tarefa" onclick="delTask(${fi},${ti})">🗑️</button>
+            </div>
+          </div>
+          <div class="tdetail">${esc(t.detalhe||"")}</div>
+          <div class="tbadges">${t.fonte?`<span class="bdg src">${esc(t.fonte)}</span>`:""}${t.prio?`<span class="bdg gut">⚡ ${esc(t.prio)}</span>`:""}</div>
+          <div class="tctrl"><label>Responsável<select onchange="setField('${t.id}','resp',this.value)">${opts(t.resp||"—")}</select></label>
+            <label>Prazo<input type="date" value="${t.prazo||""}" onchange="setField('${t.id}','prazo',this.value)"></label></div>
+        </div></div>`;
+    }).join("");
+    const total=ph.tarefas.length, done = ph.tarefas.filter(t=>t.feito).length, pct=total?Math.round(done/total*100):0;
+    const col = UI.collapsed[ph.id] ? "collapsed":"";
+    return `<div class="phase ${col}" id="ph_${ph.id}">
+      <div class="phase-head" onclick="togglePhase('${ph.id}')">
+        <div class="phase-num" style="background:${ph.cor||'#364b81'}">${esc(ph.numero!=null?ph.numero:(ph.id.replace(/\D/g,'')||'•'))}</div>
+        <div style="flex:1"><h3>${esc(ph.titulo)}</h3><div class="pmeta">${esc(ph.meta||"")}</div></div>
+        <div class="phase-prog"><div class="pp-bar"><i style="width:${pct}%"></i></div><div class="pp-txt">${done}/${total} concluídas</div></div>
+        <span class="caret">▼</span></div>
+      <div class="tasks">${rows||'<div class="tdetail" style="padding:4px 0">Sem tarefas nesta fase ainda.</div>'}</div>
+      <div class="addtask"><button class="addtaskbtn" onclick="openTaskEdit(${fi},-1)">+ Adicionar tarefa nesta fase</button></div>
+    </div>`;
+  }).join("");
+}
+function toggle(id,v){ const r=findTask(id); if(!r)return; r.t.feito=v; save(); const c=document.getElementById("card_"+id); if(c)c.classList.toggle("done",v); updateProgress(); refreshPhaseBars(); }
+function setField(id,f,v){ const r=findTask(id); if(!r)return; r.t[f]=v; save(); }
+function togglePhase(id){ UI.collapsed[id]=!UI.collapsed[id]; save(); document.getElementById("ph_"+id).classList.toggle("collapsed"); }
+function refreshPhaseBars(){ DATA.fases.forEach(ph=>{ const total=ph.tarefas.length,done=ph.tarefas.filter(t=>t.feito).length, pct=total?Math.round(done/total*100):0;
+  const el=document.querySelector("#ph_"+ph.id+" .pp-bar i"), tx=document.querySelector("#ph_"+ph.id+" .pp-txt");
+  if(el)el.style.width=pct+"%"; if(tx)tx.textContent=`${done}/${total} concluídas`; }); }
+function updateProgress(){ const all=allTasks(); const done=all.filter(t=>t.feito).length; const pct=all.length?Math.round(done/all.length*100):0;
+  document.getElementById("ringPct").textContent=pct+"%"; document.getElementById("ring").style.setProperty("--p",pct);
+  document.getElementById("stDone").textContent=done; document.getElementById("stTotal").textContent=all.length; document.getElementById("stOpen").textContent=all.length-done; }
+
+/* ============================ MODAL ============================ */
+function showModal(title, body, foot){
+  document.getElementById("modalTitle").innerHTML=title;
+  document.getElementById("modalBody").innerHTML=body;
+  document.getElementById("modalFoot").innerHTML=foot;
+  document.getElementById("modal").classList.add("open");
+}
+function closeModal(){ document.getElementById("modal").classList.remove("open"); }
+const gv = id => { const el=document.getElementById(id); return el?el.value:""; };
+const toLines = v => v.split("\n").map(x=>x.trim()).filter(Boolean);
+const fromLines = a => (a||[]).join("\n");
+
+/* ---- Encontro: detalhe ---- */
+function openEncDetail(i){
+  const e=DATA.encontros[i]; if(!e)return;
+  const assoc = allTasks().filter(t=>t.fonte && String(t.fonte).split(/[\s,+/]+/).includes(e.n));
+  const cls = e.s==="done"?"st green":e.s==="now"?"st orange":"st amber";
+  let b = `<div class="mblock"><span class="statusbadge ${cls}">${STATUS_LABEL[e.s]||"Planejado"}</span> &nbsp;<b>${esc(e.d)}</b></div>`;
+  if(e.resumo) b+=`<div class="mblock"><h4>O que foi feito</h4><p>${esc(e.resumo)}</p></div>`;
+  if(e.entregaveis&&e.entregaveis.length) b+=`<div class="mblock"><h4>Entregáveis</h4><ul class="mlist">${e.entregaveis.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  if(e.insights&&e.insights.length) b+=`<div class="mblock"><h4>Insights</h4><ul class="mlist">${e.insights.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  if(e.alertas&&e.alertas.length) b+=`<div class="mblock"><h4>Alertas</h4><ul class="mlist alert">${e.alertas.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  b+=`<div class="mblock"><h4>Tarefas associadas</h4>`;
+  if(assoc.length){ b+= assoc.map(t=>`<div class="assoc">
+      <input type="checkbox" class="cbox minic" ${t.feito?"checked":""} onchange="toggle('${t.id}',this.checked)">
+      <div><div>${esc(t.titulo)}</div><div class="ad">${esc(t.resp||"—")}${t.prazo?" · "+esc(t.prazo):""}</div></div></div>`).join(""); }
+  else b+=`<p class="ad" style="color:var(--muted)">Nenhuma tarefa vinculada a este encontro.</p>`;
+  b+=`</div>`;
+  const foot=`<button class="btn danger mr" onclick="delEnc(${i})">🗑️ Excluir</button>
+    <button class="btn ghost" onclick="closeModal()">Fechar</button>
+    <button class="btn primary" onclick="openEncEdit(${i})">✏️ Editar encontro</button>`;
+  showModal(`${esc(e.n)} — ${esc(e.t)}`, b, foot);
+}
+/* ---- Encontro: editar/adicionar ---- */
+function openEncEdit(i){
+  const e = i>=0?DATA.encontros[i]:{n:"",d:"",t:"",s:"plan",resumo:"",insights:[],entregaveis:[],alertas:[]};
+  const body=`
+    <div class="frow"><div class="field"><label>Rótulo</label><input id="e_n" value="${escAttr(e.n)}" placeholder="E04"></div>
+    <div class="field"><label>Data</label><input id="e_d" value="${escAttr(e.d)}" placeholder="12/06 ou jul"></div></div>
+    <div class="field"><label>Tema</label><input id="e_t" value="${escAttr(e.t)}"></div>
+    <div class="field"><label>Status</label><select id="e_s">
+      <option value="done" ${e.s==="done"?"selected":""}>Concluído</option>
+      <option value="now" ${e.s==="now"?"selected":""}>Em andamento (atual)</option>
+      <option value="plan" ${e.s==="plan"?"selected":""}>Planejado</option></select></div>
+    <div class="field"><label>O que foi feito (resumo)</label><textarea id="e_resumo">${esc(e.resumo||"")}</textarea></div>
+    <div class="field"><label>Entregáveis <span class="sub">(um por linha)</span></label><textarea id="e_ent">${esc(fromLines(e.entregaveis))}</textarea></div>
+    <div class="field"><label>Insights <span class="sub">(um por linha)</span></label><textarea id="e_ins">${esc(fromLines(e.insights))}</textarea></div>
+    <div class="field"><label>Alertas <span class="sub">(um por linha)</span></label><textarea id="e_ale">${esc(fromLines(e.alertas))}</textarea></div>`;
+  const foot=`<button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveEnc(${i})">Salvar</button>`;
+  showModal(i>=0?"Editar encontro":"Adicionar encontro", body, foot);
+}
+function saveEnc(i){
+  const obj={ n:gv("e_n").trim(), d:gv("e_d").trim(), t:gv("e_t").trim(), s:gv("e_s"),
+    resumo:gv("e_resumo").trim(), entregaveis:toLines(gv("e_ent")), insights:toLines(gv("e_ins")), alertas:toLines(gv("e_ale")) };
+  if(!obj.n){ alert("Informe ao menos o rótulo do encontro (ex.: E04)."); return; }
+  if(i>=0) DATA.encontros[i]=obj; else DATA.encontros.push(obj);
+  save(); closeModal(); renderTimeline(); updateProgress();
+}
+function delEnc(i){ if(confirm("Excluir este encontro da linha do tempo? As tarefas não são removidas.")){ DATA.encontros.splice(i,1); save(); closeModal(); renderTimeline(); } }
+
+/* ---- Tarefa: editar/adicionar ---- */
+function openTaskEdit(fi,ti){
+  const isNew = ti<0;
+  const t = isNew?{titulo:"",detalhe:"",resp:"—",prazo:"",fonte:"",prio:"",feito:false}:DATA.fases[fi].tarefas[ti];
+  const faseOpts = DATA.fases.map((f,idx)=>`<option value="${idx}" ${idx===fi?"selected":""}>${esc(f.titulo)}</option>`).join("");
+  const pl = peopleList();
+  const respKnown = pl.includes(t.resp||"—");
+  const respOpts = pl.map(p=>`<option ${p===(t.resp||"—")?"selected":""}>${esc(p)}</option>`).join("") + (!respKnown && t.resp?`<option selected>${esc(t.resp)}</option>`:"");
+  const body=`
+    <div class="field"><label>Título</label><input id="t_titulo" value="${escAttr(t.titulo)}"></div>
+    <div class="field"><label>Detalhe</label><textarea id="t_detalhe">${esc(t.detalhe||"")}</textarea></div>
+    <div class="frow">
+      <div class="field"><label>Responsável</label><select id="t_resp">${respOpts}</select></div>
+      <div class="field"><label>Prazo</label><input type="date" id="t_prazo" value="${escAttr(t.prazo||"")}"></div>
+    </div>
+    <div class="frow">
+      <div class="field"><label>Fase</label><select id="t_fase">${faseOpts}</select></div>
+      <div class="field"><label>Origem <span class="sub">(ex.: E03)</span></label><input id="t_fonte" value="${escAttr(t.fonte||"")}"></div>
+    </div>
+    <div class="frow">
+      <div class="field"><label>Prioridade <span class="sub">(opcional)</span></label><input id="t_prio" value="${escAttr(t.prio||"")}" placeholder="Urgente / Prioridade"></div>
+      <div class="field"><label>Concluída?</label><select id="t_feito"><option value="nao" ${!t.feito?"selected":""}>Não</option><option value="sim" ${t.feito?"selected":""}>Sim</option></select></div>
+    </div>`;
+  const foot=`<button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveTask(${fi},${ti})">Salvar</button>`;
+  showModal(isNew?"Adicionar tarefa":"Editar tarefa", body, foot);
+}
+function genId(){ let max=0; allTasks().forEach(t=>{ const m=/^t(\d+)$/.exec(t.id); if(m)max=Math.max(max,+m[1]); }); return "t"+(max+1); }
+function saveTask(fi,ti){
+  const titulo=gv("t_titulo").trim(); if(!titulo){ alert("Informe o título da tarefa."); return; }
+  const obj={ titulo, detalhe:gv("t_detalhe").trim(), resp:gv("t_resp")||"—", prazo:gv("t_prazo"),
+    fonte:gv("t_fonte").trim(), prio:gv("t_prio").trim(), feito: gv("t_feito")==="sim" };
+  const targetFi = parseInt(gv("t_fase"),10);
+  if(ti<0){ obj.id=genId(); DATA.fases[targetFi].tarefas.push(obj); }
+  else {
+    const old=DATA.fases[fi].tarefas[ti]; obj.id=old.id;
+    if(targetFi===fi){ DATA.fases[fi].tarefas[ti]=obj; }
+    else { DATA.fases[fi].tarefas.splice(ti,1); DATA.fases[targetFi].tarefas.push(obj); }
+  }
+  save(); closeModal(); renderJourney(); updateProgress();
+}
+function delTask(fi,ti){
+  const t=DATA.fases[fi].tarefas[ti];
+  if(confirm('Excluir a tarefa "'+(t.titulo||"")+'"?')){ DATA.fases[fi].tarefas.splice(ti,1); save(); renderJourney(); updateProgress(); }
+}
+
+function resetAll(){ if(confirm("Isto descarta todas as suas edições e volta ao conteúdo original do plano. Continuar?")){ localStorage.removeItem(LS); load(); renderAll(); } }
+function renderAll(){ renderHeader(); renderTimeline(); renderPillars(); renderEng(); renderJourney(); updateProgress(); }
+load(); renderAll();
+</script>
+</body>
+</html>
